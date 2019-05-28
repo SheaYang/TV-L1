@@ -14,8 +14,8 @@ int main( int argc, char* argv[]){
     char c;
     char *filename;
     int gpuFlag=0;
-    int itertime=20000;
-    double h, lambda=2, delta=0.005, epsilon=0.005;
+    int itertime=10000;//100000;
+    double h, lambda=0.3, delta=0.005, epsilon=0.005;
 
     while ((c = getopt(argc, argv, ":bgk:s:d:f:p:x:y:")) != -1) {
         switch(c) {
@@ -89,13 +89,13 @@ int main( int argc, char* argv[]){
   cvMerge(dblSplit[0], dblSplit[1], dblSplit[2], NULL, dbl);
   cvMerge(diffSplit[0], diffSplit[1], diffSplit[2], NULL, diff);
 
-  cvSaveImage("img.png", img, 0);
-  cvSaveImage("imgSplit_blue.png", imgSplit[2], 0);
-  cvSaveImage("deblur.png", dbl, 0);
+  cvSaveImage("/scratch/sy1823/HPC/final_project/mydeblur_GPU/img.png", img, 0);
+  cvSaveImage("/scratch/sy1823/HPC/final_project/mydeblur_GPU/imgSplit_blue.png", imgSplit[2], 0);
+  cvSaveImage("/scratch/sy1823/HPC/final_project/mydeblur_GPU/deblur.png", dbl, 0);
   //cvSaveImage("deblur_red.png", dblSplit[0], 0);
   //cvSaveImage("deblur_green.png", dblSplit[1], 0);
-  cvSaveImage("deblur_blue.png", dblSplit[2], 0);
-  cvSaveImage("diff.png", diff, 0);
+  cvSaveImage("/scratch/sy1823/HPC/final_project/mydeblur_GPU/deblur_blue.png", dblSplit[2], 0);
+  cvSaveImage("/scratch/sy1823/HPC/final_project/mydeblur_GPU/diff.png", diff, 0);
 
   cvReleaseImage(&imgSplit[0]);
   cvReleaseImage(&imgSplit[1]);

@@ -5,7 +5,7 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-#define BLOCK_SIZE 32
+#define BLOCK_SIZE 8
 
 extern "C" void deconvolve (int N1, int N2, double *uIni, double *srcImg, int itertime, double h, double lambda, double delta, double epsilon, double * dataNow);
 
@@ -105,13 +105,16 @@ void deconvolve (int N1, int N2, double *uIni, double *srcImg, int itertime, dou
     deblur_kernel<<<dimGrid,dimBlock>>>(N1,N2, u_prev_d,srcImg_d,u_d,f, nablaU, uMinusf, h, lambda, delta, epsilon);
     cudaMemcpy(u_prev_d,u_d,N1*N2*sizeof(double),cudaMemcpyDeviceToDevice);
   }
+  t=clock()-t;
+  double tt=((float)t)/CLOCKS_PER_SEC;
+  printf("time= %f seconds\n", tt);
+  printf("GPU Bandwidth = %f GB/s\n",25*N1*N2*sizeof(double)/tt/1e9);
+
   cudaMemcpy(u,u_prev_d,N1*N2*sizeof(double),cudaMemcpyDeviceToHost);
 
   //cudaMemcpy(u, srcImg_d, N1*N2*sizeof(double), cudaMemcpyDeviceToHost);
   
-  t=clock()-t;
   printf("Final residule: %f\n", residual(N1,N2, u, srcImg));
-  printf("time= %f seconds\n", ((float)t)/CLOCKS_PER_SEC);
   cudaFree(u_d);
   cudaFree(u_prev_d);
   cudaFree(f);
